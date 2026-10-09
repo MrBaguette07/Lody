@@ -1,0 +1,478 @@
+.stage {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 20px 20px;
+  pointer-events: none;
+}
+.stage.bottom {
+  flex-direction: column-reverse;
+  align-items: flex-end;
+  padding: 20px 10px 10px;
+}
+.stage > * {
+  pointer-events: auto;
+}
+
+/* ---------- island ---------- */
+.island {
+  display: flex;
+  flex-direction: column;
+  width: 64px;
+  border-radius: 32px;
+  border: 1px solid transparent;
+  background: transparent;
+  overflow: hidden;
+  transition:
+    width 0.38s cubic-bezier(0.3, 1.25, 0.45, 1),
+    border-radius 0.3s,
+    background 0.25s,
+    border-color 0.25s,
+    box-shadow 0.25s;
+}
+.island.wide {
+  width: 420px;
+  background: color-mix(in srgb, var(--panel) 95%, transparent);
+  border-color: var(--line);
+  box-shadow: 0 8px 26px rgba(0, 0, 0, 0.28);
+}
+.island.open {
+  width: 720px;
+  border-radius: 26px;
+  background: var(--panel);
+  box-shadow: 0 18px 60px rgba(0, 0, 0, 0.38);
+}
+.island.mood-alert.wide {
+  border-color: var(--warn);
+}
+.island.mood-happy.wide {
+  border-color: var(--ok);
+}
+.island.mood-error.wide {
+  border-color: var(--err);
+}
+
+.island-bar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 64px;
+  padding: 0 6px;
+}
+.island.open .island-bar {
+  min-height: 56px;
+  padding: 0 10px 0 8px;
+  border-bottom: 1px solid var(--line);
+}
+.island-grip {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  flex: 1;
+  cursor: pointer;
+  padding-right: 10px;
+}
+.island.open .island-grip {
+  flex: 0 1 200px;
+}
+.pill-lody {
+  position: relative;
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  filter: drop-shadow(0 4px 8px rgba(70, 40, 160, 0.35));
+}
+.island.open .pill-lody {
+  width: 44px;
+  height: 44px;
+}
+.pill-badge {
+  position: absolute;
+  right: -3px;
+  bottom: -2px;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  border-radius: 9px;
+  background: var(--accent);
+  color: var(--accent-ink);
+  font-size: 11px;
+  font-weight: 800;
+  display: grid;
+  place-items: center;
+  border: 2px solid var(--panel);
+}
+.pill-text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  opacity: 0;
+  transition: opacity 0.2s;
+  white-space: nowrap;
+}
+.island.wide .pill-text {
+  opacity: 1;
+  transition-delay: 0.1s;
+}
+.pill-text strong {
+  font-size: 14px;
+  font-weight: 800;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.pill-text span {
+  font-size: 12px;
+  color: var(--muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.island-tabs {
+  flex: 1;
+  display: flex;
+  justify-content: flex-end;
+  gap: 2px;
+  min-width: 0;
+}
+.island-tab {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  min-width: 52px;
+  padding: 6px 4px 4px;
+  border: none;
+  background: none;
+  border-radius: 12px;
+  color: var(--muted);
+  cursor: pointer;
+  font-size: 10.5px;
+  font-weight: 700;
+  transition: background 0.15s, color 0.15s;
+}
+.island-tab:hover {
+  background: var(--card-2);
+  color: var(--text);
+}
+.island-tab.active {
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+.island-tab i {
+  position: absolute;
+  top: 2px;
+  right: 8px;
+  min-width: 15px;
+  height: 15px;
+  padding: 0 4px;
+  border-radius: 8px;
+  background: var(--accent);
+  color: var(--accent-ink);
+  font-style: normal;
+  font-size: 9.5px;
+  font-weight: 800;
+  display: grid;
+  place-items: center;
+}
+.island-tab i.warn {
+  background: var(--warn);
+  color: #3b2500;
+}
+
+.island-body {
+  height: 600px;
+  display: flex;
+  flex-direction: column;
+  animation: body-in 0.3s ease-out;
+}
+@keyframes body-in {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+}
+.island-approvals {
+  padding: 10px 14px 0;
+}
+.island-approvals .approval {
+  box-shadow: none;
+}
+.island-view {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Carte d'accord sous la pilule repliée */
+.stage > .approval {
+  width: 440px;
+  animation: card-in 0.3s cubic-bezier(0.3, 1.4, 0.5, 1);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35), 0 0 0 4px var(--warn-soft);
+}
+.approval.compact .approval-code {
+  max-height: 96px;
+}
+@keyframes card-in {
+  from {
+    opacity: 0;
+    transform: translateY(-8px) scale(0.97);
+  }
+}
+
+.stage .toast {
+  position: static;
+  transform: none;
+  max-width: 600px;
+}
+
+/* ---------- accueil ---------- */
+.home {
+  padding-top: 14px;
+  gap: 14px;
+}
+.command {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.command-box {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 8px 8px 12px;
+  border-radius: 18px;
+  border: 1.5px solid var(--line-2);
+  background: var(--card);
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.command-box:focus-within {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 4px var(--accent-soft);
+}
+.command-box textarea {
+  flex: 1;
+  border: none;
+  outline: none;
+  background: none;
+  resize: none;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.4;
+  padding: 6px 0;
+  user-select: text;
+}
+.command-opts {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.home-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  align-items: start;
+}
+.home-card {
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--card);
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+.home-card header,
+.git-card header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 4px 4px;
+}
+.home-card h3,
+.git-card h3 {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 800;
+  flex: 1;
+}
+.git-card header h3 {
+  flex: 0 1 auto;
+}
+.home-card h4 {
+  margin: 8px 4px 2px;
+  font-size: 11px;
+  font-weight: 800;
+  color: var(--faint);
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+.home-card p {
+  margin: 4px;
+}
+
+/* lignes compactes (accueil, git) */
+.row {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  width: 100%;
+  padding: 6px 6px;
+  border: none;
+  background: none;
+  border-radius: 10px;
+  text-align: left;
+  cursor: pointer;
+  min-width: 0;
+}
+.row.static {
+  cursor: default;
+}
+.row:hover {
+  background: var(--card-2);
+}
+.row-main {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  border: none;
+  background: none;
+  padding: 0;
+  text-align: left;
+  cursor: pointer;
+}
+.row-main strong {
+  font-size: 13px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.row-main span {
+  font-size: 11.5px;
+  color: var(--muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.row-side {
+  font-size: 11px;
+  color: var(--faint);
+  white-space: nowrap;
+}
+.row-actions {
+  display: flex;
+  gap: 4px;
+  flex-shrink: 0;
+}
+.row .dot {
+  margin: 0 2px;
+}
+.ci-ok {
+  color: var(--ok);
+  flex-shrink: 0;
+}
+.ci-fail {
+  color: var(--err);
+  flex-shrink: 0;
+}
+.ci-run {
+  color: var(--warn);
+  flex-shrink: 0;
+}
+.ci-off {
+  color: var(--faint);
+  flex-shrink: 0;
+}
+
+/* ---------- git ---------- */
+.git-card {
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--card);
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex-shrink: 0;
+}
+.git-branch {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.git-branch strong {
+  font-family: var(--mono);
+  font-size: 13px;
+}
+.tag.link {
+  border: none;
+  cursor: pointer;
+}
+.tag.fail {
+  background: var(--err-soft);
+  color: var(--err);
+}
+.git-files {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+.git-file {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11.5px;
+  font-family: var(--mono);
+  padding: 2px 7px 2px 3px;
+  border-radius: 7px;
+  background: var(--card-2);
+}
+.fs {
+  font-style: normal;
+  font-weight: 800;
+  font-size: 10px;
+  min-width: 16px;
+  text-align: center;
+  border-radius: 5px;
+  padding: 1px 3px;
+}
+.fs-mod {
+  background: var(--warn-soft);
+  color: var(--warn);
+}
+.fs-new {
+  background: var(--ok-soft);
+  color: var(--ok);
+}
+.fs-del {
+  background: var(--err-soft);
+  color: var(--err);
+}
+.commit {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 12.5px;
+  padding: 2px 4px;
+}
+.commit code {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--accent);
+}
+.commit-subject {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

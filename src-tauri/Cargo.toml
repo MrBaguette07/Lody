@@ -1,0 +1,28 @@
+[package]
+name = "lody"
+version = "0.1.0"
+description = "Lody, assistant de bureau pour piloter Claude Code, Codex et tous les LLM"
+edition = "2021"
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+tauri = { version = "2", features = ["tray-icon"] }
+tauri-plugin-opener = "2"
+tauri-plugin-dialog = "2"
+tauri-plugin-global-shortcut = "2"
+tauri-plugin-single-instance = "2"
+serde = { version = "1", features = ["derive"] }
+serde_json = { version = "1", features = ["preserve_order"] }
+tiny_http = "0.12"
+reqwest = { version = "0.12", default-features = false, features = ["json", "stream", "rustls-tls"] }
+futures-util = "0.3"
+keyring = { version = "3", features = ["windows-native"] }
+rusqlite = { version = "0.32", features = ["bundled"] }
+uuid = { version = "1", features = ["v4"] }
+dirs = "5"
+percent-encoding = "2"
+
+[profile.release]
+strip = true
